@@ -1,0 +1,96 @@
+#!/bin/bash
+## clicksnap - click on the appropriate area of the window to snap it in a given direction. 
+#  Works with active and inactive windows
+#
+#
+#
+#
+## 
+activate_window="false"
+
+eval $(xdotool getmouselocation --shell)
+Mouse_x="$X"
+Mouse_y="$Y"
+
+eval $(xdotool getwindowgeometry --shell $WINDOW)
+Win_x="$X"
+Win_y="$Y"
+Win_width="$WIDTH"
+Win_height="$HEIGHT"
+
+Rel_x="$((Mouse_x-Win_x))"
+Rel_y="$((Mouse_y-Win_y))"
+
+pos_x="$(((Mouse_x-Win_x)/(Win_width/3)))"
+pos_y="$(((Mouse_y-Win_y)/(Win_height/3)))"
+POS_CODE="$pos_x$pos_y"
+
+OFFSET=$(wmctrl -d |grep "*" | awk -F' ' '{print $8}')
+REALSIZE=$(wmctrl -d |grep "*" | awk -F' ' '{print $9}')
+
+AVAIL_X="${REALSIZE%x*}"
+AVAIL_Y="${REALSIZE#*x}"
+
+OFF_X="${OFFSET%,*}"
+OFF_Y="${OFFSET#*,}"
+
+case $POS_CODE in
+    00) # top-left
+    WIDTH=$((AVAIL_X/2))
+    HEIGHT=$((AVAIL_Y/2-OFF_Y/2))
+    X=$((0+OFF_X))
+    Y=$((0+OFF_Y))
+    ;;
+    10) # top
+    WIDTH=$((AVAIL_X))
+    HEIGHT=$((AVAIL_Y/2-OFF_Y/2))
+    X=$((0+OFF_X))
+    Y=$((0+OFF_Y))
+    ;;
+    20) # top-right
+    WIDTH=$((AVAIL_X/2))
+    HEIGHT=$((AVAIL_Y/2-OFF_Y/2))
+    X=$((AVAIL_X/2+OFF_X))
+    Y=$((0+OFF_Y))
+    ;;
+    01) # left
+    WIDTH=$((AVAIL_X/2))
+    HEIGHT=$((AVAIL_Y-OFF_Y/2))
+    X=$((0+OFF_X))
+    Y=$((0+OFF_Y))
+    ;;
+    11) # center
+    WIDTH=$((AVAIL_X/2-OFF_X))
+    HEIGHT=$((AVAIL_Y/2-OFF_Y))
+    X=$((AVAIL_X/4+OFF_X/2))
+    Y=$((AVAIL_Y/4+OFF_Y/2));;
+    21) # right
+    WIDTH=$((AVAIL_X/2))
+    HEIGHT=$((AVAIL_Y-OFF_Y/2))
+    X=$((AVAIL_X/2+OFF_X))
+    Y=$((0+OFF_Y))
+    ;;
+    02) # bottom-left
+    WIDTH=$((AVAIL_X/2))
+    HEIGHT=$((AVAIL_Y/2-OFF_Y/2))
+    X=$((0+OFF_X))
+    Y=$((AVAIL_Y/2+OFF_Y))
+    ;;
+    12) # bottom
+    WIDTH=$((AVAIL_X))
+    HEIGHT=$((AVAIL_Y/2-OFF_Y/2))
+    X=$((0+OFF_X))
+    Y=$((AVAIL_Y/2+OFF_Y))
+    ;;
+    22) # bottom-right
+    WIDTH=$((AVAIL_X/2))
+    HEIGHT=$((AVAIL_Y/2-OFF_Y/2))
+    X=$((AVAIL_X/2+OFF_X))
+    Y=$((AVAIL_Y/2+OFF_Y))
+    ;;
+esac
+
+
+xdotool windowsize $WINDOW $WIDTH $HEIGHT 
+xdotool windowmove $WINDOW $X $Y
+if [ $activate_window == "true" ]; then xdotool windowactivate $WINDOW; fi
