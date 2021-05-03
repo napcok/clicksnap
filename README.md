@@ -13,6 +13,6 @@ Add this mousebind action to context Frame:
         </action>
       </mousebind>
 
-clicksnap is binded to Ctrl + Left Mouse Click
+clicksnap is binded to <kbd>Ctrl</kbd> + <kbd>Left Mouse Click</kbd>
 
 ![clicksnap](clicksnap.png "clicksnap areas")
