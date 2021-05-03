@@ -3,6 +3,13 @@
 clicksnap for Openbox - click on the appropriate area of the window to snap it in a given direction. 
 Works with active and inactive windows.
 
+## Requirements
+- wmctrl
+- xdotool
+
+## Installation
+    wget https://git.maboxlinux.org/napcok/clicksnap/raw/branch/master/clicksnap
+    chmod +x clicksnap
 
 Add this mousebind action to context Frame:
 
