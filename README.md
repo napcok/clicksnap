@@ -20,6 +20,9 @@ Add this mousebind action to context Frame:
         </action>
       </mousebind>
 
+## Usage
 clicksnap is binded to <kbd>Ctrl</kbd> + <kbd>Left Mouse Click</kbd>
+Click inside window you like to move.
+There are 9 areas ... see screnshot :)
 
 ![clicksnap](clicksnap.png "clicksnap areas")
