@@ -12,9 +12,7 @@ Configurable gap between windows.
 - xwininfo
 
 ## Installation
-    wget https://git.maboxlinux.org/napcok/clicksnap/raw/branch/master/clicksnap
-    chmod +x clicksnap
-
+  
 Add this mousebind action to context Frame:
 
       <mousebind action="Press" button="C-Left">
