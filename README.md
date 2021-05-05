@@ -6,6 +6,8 @@ Configurable gap between windows.
 
 *(Far from perfection, but imho already enough good to use)*
 
+See it in action: https://www.youtube.com/watch?v=UzgUYYXnRww
+
 ## Requirements
 - wmctrl
 - xdotool
