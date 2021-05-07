@@ -1,5 +1,8 @@
 ## Changelog
 
+### 7.05.2021
+- option to disable "outer_gap" 
+
 ### 4.05.2021
 - ignore Dock type windows, like tint2 panel
 - better size and position calculation with gap

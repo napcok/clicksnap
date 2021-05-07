@@ -34,3 +34,14 @@ There are 9 areas ... see screenshot :)
 
 ## Configuration
 
+Edit variables on top of script
+
+    ### Configuration
+    # Gap between windows
+    GAP="32"
+    show_outer_gap="true"
+    # TITLEBAR HEIGHT - no idea how to find it from cli 
+    TITLEBAR_HEIGHT="20"
+    # Activate moved windows?
+    activate_window="false"
+    ### End Configuration

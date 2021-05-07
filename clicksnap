@@ -7,11 +7,13 @@
 ### Configuration
 # Gap between windows
 GAP="32"
+show_outer_gap="true"
 # TITLEBAR HEIGHT - no idea how to find it from cli 
 TITLEBAR_HEIGHT="20"
 # Activate moved windows?
 activate_window="false"
 ### End Configuration
+
 
 eval $(xdotool getmouselocation --shell)
 Mouse_x="$X"
@@ -20,14 +22,16 @@ Mouse_y="$Y"
 HEX_ID=$(printf '0x%x\n' $WINDOW)
 
 CHILD_ID=$(xwininfo -id $HEX_ID -children|grep "\"" | awk '{print $1}')
-
 if xwininfo -id $CHILD_ID -wm |grep Dock ; then exit 0 ;fi # Ignore Dock eg. tint2
-
 if xwininfo -id $CHILD_ID -wm |grep Undecorated ; then # Undecorated
 T="0" 
 else # Decorated
 T="$TITLEBAR_HEIGHT"
 fi
+
+## OUTER GAP
+if [[ "$show_outer_gap" == "true" ]]; then OUT_GAP="$GAP" ; else OUT_GAP="0" ; fi
+echo "OUT_GAP: $OUT_GAP"
 
 eval $(xdotool getwindowgeometry --shell $WINDOW)
 Win_x="$X"
@@ -53,25 +57,24 @@ OFF_Y="${OFFSET#*,}"
 
 case $POS_CODE in
     00) # top-left
-    W=$((AVAIL_X/2-GAP*3/2)) H=$((AVAIL_Y/2-T-GAP*3/2)) X=$((0+OFF_X+GAP)) Y=$((0+OFF_Y+GAP));;
+    W=$((AVAIL_X/2-OUT_GAP-GAP/2)) H=$((AVAIL_Y/2-T-OUT_GAP-GAP/2)) X=$((0+OFF_X+OUT_GAP)) Y=$((0+OFF_Y+OUT_GAP));;
     10) # top
-    W=$((AVAIL_X-GAP*2)) H=$((AVAIL_Y/2-T-GAP*3/2)) X=$((0+OFF_X+GAP)) Y=$((0+OFF_Y+GAP));;
+    W=$((AVAIL_X-OUT_GAP*2)) H=$((AVAIL_Y/2-T-OUT_GAP-GAP/2)) X=$((0+OFF_X+OUT_GAP)) Y=$((0+OFF_Y+OUT_GAP));;
     20) # top-right
-    W=$((AVAIL_X/2-GAP*3/2)) H=$((AVAIL_Y/2-T-GAP*3/2)) X=$((AVAIL_X/2+OFF_X+GAP/2)) Y=$((0+OFF_Y+GAP));;
+    W=$((AVAIL_X/2-OUT_GAP-GAP/2)) H=$((AVAIL_Y/2-T-OUT_GAP-GAP/2)) X=$((AVAIL_X/2+OFF_X+GAP/2)) Y=$((0+OFF_Y+OUT_GAP));;
     01) # left
-    W=$((AVAIL_X/2-GAP*3/2)) H=$((AVAIL_Y-T-GAP*2)) X=$((0+OFF_X+GAP)) Y=$((0+OFF_Y+GAP));;
+    W=$((AVAIL_X/2-OUT_GAP-GAP/2)) H=$((AVAIL_Y-T-OUT_GAP*2)) X=$((0+OFF_X+OUT_GAP)) Y=$((0+OFF_Y+OUT_GAP));;
     11) # center
     W=$((AVAIL_X/8*6-OFF_X)) H=$((AVAIL_Y/8*6-T)) X=$((AVAIL_X/8+OFF_X/2)) Y=$((AVAIL_Y/8+OFF_Y/2));;
     21) # right
-    W=$((AVAIL_X/2-GAP*3/2)) H=$((AVAIL_Y-T-GAP*2)) X=$((AVAIL_X/2+OFF_X+GAP/2)) Y=$((0+OFF_Y+GAP));;
+    W=$((AVAIL_X/2-OUT_GAP-GAP/2)) H=$((AVAIL_Y-T-OUT_GAP*2)) X=$((AVAIL_X/2+OFF_X+GAP/2)) Y=$((0+OFF_Y+OUT_GAP));;
     02) # bottom-left
-    W=$((AVAIL_X/2-GAP*3/2)) H=$((AVAIL_Y/2-T-GAP*3/2)) X=$((0+OFF_X+GAP)) Y=$((AVAIL_Y/2+OFF_Y+GAP/2));;
+    W=$((AVAIL_X/2-OUT_GAP-GAP/2)) H=$((AVAIL_Y/2-T-OUT_GAP-GAP/2)) X=$((0+OFF_X+OUT_GAP)) Y=$((AVAIL_Y/2+OFF_Y+GAP/2));;
     12) # bottom
-    W=$((AVAIL_X-GAP*2)) H=$((AVAIL_Y/2-T-GAP*3/2)) X=$((0+OFF_X+GAP)) Y=$((AVAIL_Y/2+OFF_Y+GAP/2));;
+    W=$((AVAIL_X-OUT_GAP*2)) H=$((AVAIL_Y/2-T-OUT_GAP-GAP/2)) X=$((0+OFF_X+OUT_GAP)) Y=$((AVAIL_Y/2+OFF_Y+GAP/2));;
     22) # bottom-right
-    W=$((AVAIL_X/2-GAP*3/2)) H=$((AVAIL_Y/2-T-GAP*3/2)) X=$((AVAIL_X/2+OFF_X+GAP/2)) Y=$((AVAIL_Y/2+OFF_Y+GAP/2));;
+    W=$((AVAIL_X/2-OUT_GAP-GAP/2)) H=$((AVAIL_Y/2-T-OUT_GAP-GAP/2)) X=$((AVAIL_X/2+OFF_X+GAP/2)) Y=$((AVAIL_Y/2+OFF_Y+GAP/2));;
 esac
-
 
 xdotool windowsize $WINDOW $W $H 
 xdotool windowmove $WINDOW $X $Y
